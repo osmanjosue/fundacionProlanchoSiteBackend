@@ -22,6 +22,12 @@ const ArticleSchema = new Schema ({
     }
 });
 
+ArticleSchema.method( 'toJSON', function() {
+    const {__v, _id, ...object} = this.toObject();
+    object.idArticle = _id;
+    return object;
+})
+
 module.exports = model( 'Article', ArticleSchema);
 
 /* The permitted SchemaTypes are:
