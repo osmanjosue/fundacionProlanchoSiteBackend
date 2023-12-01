@@ -5,7 +5,7 @@ const getArticles = async (req, res) => {
 
 
     console.log({ Article });
-    const article = await Article.find({}, 'title content images dateCreated category');
+    const article = await Article.find({}, 'user title content images dateCreated published category');
 
     res.json({
         ok: true,
@@ -15,7 +15,7 @@ const getArticles = async (req, res) => {
 
 const createArticle = async (req, res = response) => {
 
-    const { title, content, images, datecreated, category } = req.body;
+    /* const { title, content, images, datecreated, category } = req.body; */
 
     try {
         const article = new Article(req.body);

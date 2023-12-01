@@ -1,6 +1,15 @@
 const {Schema, model} = require('mongoose')
 
 const ArticleSchema = new Schema ({
+    user: {
+
+        type: String,
+        required: true,
+
+       /*  required: true,
+        type: Schema.Types.ObjectId, //indica a mongoose que hay una relacion con cierto esquema
+        ref: 'Usuario' // aqui se le dice a mongoose cual es el esquema */
+    }, 
     title: {
         type: String,
         required: true,
@@ -15,6 +24,10 @@ const ArticleSchema = new Schema ({
     }],
     dateCreated: {
         type: Date,
+        required: true,
+    },
+    published: {
+        type: Boolean,
         required: true,
     },
     category: {
