@@ -13,11 +13,11 @@ router.get('/', getArticles );
 
 router.post('/',
 [
-    check('user', 'hace falta el usuario').notEmpty(),
     check('title', 'El titulo es necesario').notEmpty(),
     check('content', 'El contenido del articulo es necesario').notEmpty(),
     check('images', 'Por lo menos se necesita una imagen').notEmpty(),    
-    check('dateCreated', 'La fecha de publicacion es necesaria').notEmpty(),
+    check('dateCreated', 'La fecha de creacion es necesaria').notEmpty(),
+    check('dateAssigned', 'La fecha de publicacion es necesaria').notEmpty(),
     check('published', 'Es necesario saber si se publica o no').notEmpty(),
     validarCampos,  
 ]

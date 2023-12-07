@@ -12,6 +12,7 @@ dbConnection(); //database conexion
 
 //routes starts
 app.use( '/api/articles', require('./routes/articles-routes'))
+app.use( '/api/users', require('./routes/user-routes'))
 //routes Ends
 
 app.listen(process.env.PORT, ()=>{
