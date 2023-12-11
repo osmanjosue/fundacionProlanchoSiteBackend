@@ -6,12 +6,12 @@ const { Router }= require( 'express' );
 const {check} = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 
-/* const {getArticles, createArticle} = require( '../controllers/articles-controllers' ); */
-const {getUsers, createUser} = require('../controllers/users-controllers')
+const {getUsers, createUser} = require('../controllers/users-controllers');
+const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
-router.get('/', getUsers );
+router.get('/',validarJWT, getUsers );
 
 router.post('/',
 [
@@ -22,6 +22,8 @@ router.post('/',
 
 ]
  ,createUser);
+
+ TODO: /* add the validarJWT middleware to update (put) and delete user */
 
 
 module.exports = router;
