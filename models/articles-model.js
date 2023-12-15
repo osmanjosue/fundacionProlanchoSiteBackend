@@ -4,7 +4,7 @@ const ArticleSchema = new Schema ({
     userId: {
         required: true,
         type: Schema.Types.ObjectId, //indica a mongoose que hay una relacion con cierto esquema
-        ref: 'Usuario' // aqui se le dice a mongoose cual es el esquema
+        ref: 'User' // aqui se le dice a mongoose cual es el esquema
     }, 
     title: {
         type: String,
@@ -31,7 +31,9 @@ const ArticleSchema = new Schema ({
         required: true,
     },
     project: {
-        type: String,
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref: 'Project'
     },
     category: {
         type: String,

@@ -6,6 +6,7 @@ const {check} = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 
 const {getArticles, createArticle} = require( '../controllers/articles-controllers' );
+const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
@@ -13,6 +14,7 @@ router.get('/', getArticles );
 
 router.post('/',
 [
+    validarJWT,
     check('title', 'El titulo es necesario').notEmpty(),
     check('content', 'El contenido del articulo es necesario').notEmpty(),
     check('images', 'Por lo menos se necesita una imagen').notEmpty(),    

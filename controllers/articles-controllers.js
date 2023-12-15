@@ -5,7 +5,7 @@ const getArticles = async (req, res=response) => {
 
 
     console.log({ Article });
-    const article = await Article.find({}, 'userId title content images dateCreated published category');
+    const article = await Article.find({}, 'userId title content images dateCreated dateAssigned published project category');
 
     res.json({
         ok: true,
@@ -17,9 +17,8 @@ const createArticle = async (req, res = response) => {
 
     /* const { title, content, images, datecreated, category } = req.body; */
     const article = new Article({
-        userId: '656a413e5164e5e4bed71025',
+        userId: req.uid,
         ...req.body});
-    console.log({article});
     try {
         await article.save();
 
