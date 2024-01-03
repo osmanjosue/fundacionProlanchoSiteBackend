@@ -37,6 +37,8 @@ const createArticle = async (req, res = response) => {
 
 }
 
+// TODO: make the delete and update controllers
+
 module.exports = {
     getArticles,
     createArticle

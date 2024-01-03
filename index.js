@@ -15,6 +15,7 @@ app.use('/api/login', require('./routes/loginUser-routes'));
 app.use( '/api/articles', require('./routes/articles-routes'));
 app.use( '/api/users', require('./routes/user-routes'));
 app.use( '/api/projects', require ('./routes/project-routes'));
+app.use( '/api/uploads', require ('./routes/uploads-routes'));
 //routes Ends
 
 app.listen(process.env.PORT, ()=>{
