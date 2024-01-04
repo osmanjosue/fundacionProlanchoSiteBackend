@@ -17,19 +17,18 @@ const uploadImages = (req, res = response) => {
     }
     //ya podemos usar req.files porque se instalo con 'express-fileupload'
     //validar que exista un archivo
-    if (!req.files || Object.keys(req.files).length === 0) {
+    /* if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({
             ok: false,
             msg: 'No se subio ningun archivo',
         })
-    }
+    } 20 => 25 added to the middleware file-upload.middleware.js*/
 
     //de aqui en delante se procesa la imagen.
 
-    const file = req.files.imagen;
+    const file = req.body.files.at(0);
 
-    const cuttedName = file.name.split('.');
-    const extFile = cuttedName.at(-1);
+    const extFile = file.mimetype.split('/').at(1)
 
     // validate extension
 
