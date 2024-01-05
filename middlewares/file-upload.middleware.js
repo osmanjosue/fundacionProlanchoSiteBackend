@@ -11,9 +11,11 @@ const fileUploadMiddleware = (req, res = response, next) => {
     }
 
     if (!Array.isArray(req.files.imagen)) {
-        req.body.files = [req.files.imagen]
+        req.body.files = [req.files.imagen];
+        req.body.files.single = true;
     } else {
         req.body.files = req.files.imagen
+        req.body.files.single = false;
     }
 
     next();
