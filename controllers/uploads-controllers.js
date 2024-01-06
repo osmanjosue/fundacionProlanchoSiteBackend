@@ -1,4 +1,6 @@
 const { response } = require('express');
+
+//helper that uploads the images
 const { uploadSingle } = require('../helpers/uploadFile');
 
 const uploadImage = (req, res = response) => {

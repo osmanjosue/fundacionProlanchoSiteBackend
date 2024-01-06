@@ -1,3 +1,7 @@
+//Created this middleware to receive one or multiple files and also to send an
+//aditional property req.body.files.single = true; 
+//to see wether is single or multiple files
+
 const { response } = require('express');
 
 
