@@ -2,9 +2,7 @@ const { response } = require('express');
 const Article = require('../models/articles-model');
 
 const getArticles = async (req, res=response) => {
-
-
-    console.log({ Article });
+    
     const article = await Article.find({}, 'userId title content images dateCreated dateAssigned published project category');
 
     res.json({
