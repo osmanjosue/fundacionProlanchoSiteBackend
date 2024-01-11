@@ -1,8 +1,13 @@
 const { response } = require('express');
-const Article = require('../models/articles-model');
+const mongodb = require('mongodb');
+const ObjectId = mongodb.ObjectId;
 
-const getArticles = async (req, res=response) => {
-    
+const Article = require('../models/articles-model');
+const { borrarImagenCarpetaLocal } = require('../helpers/updateOrDeleteFiles');
+const { cloudinaryDelete } = require('../helpers/cloudinary');
+
+const getArticles = async (req, res = response) => {
+
     const article = await Article.find({}, 'userId title content images dateCreated dateAssigned published project category');
 
     res.json({
@@ -14,9 +19,11 @@ const getArticles = async (req, res=response) => {
 const createArticle = async (req, res = response) => {
 
     /* const { title, content, images, datecreated, category } = req.body; */
+    //req.uid viene del middleware validar-jwt.js
     const article = new Article({
         userId: req.uid,
-        ...req.body});
+        ...req.body
+    });
     try {
         await article.save();
 
@@ -35,9 +42,54 @@ const createArticle = async (req, res = response) => {
 
 }
 
+deleteArticle = async (req, res) => {
+    const articleId = req.params.id;
+    try {
+
+        if (ObjectId.isValid(articleId)) {
+            const articleDb = await Article.findById(articleId);
+            if (!articleDb) {
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'No existe un articulo por ese id'
+                })
+            } else {
+                await Article.findByIdAndDelete(articleId);
+                
+                articleDb
+                .images
+                .map(file => {
+                    cloudinaryFile=file.split('.').at(0);
+                    console.log(cloudinaryFile)
+                    borrarImagenCarpetaLocal(`uploads/articulos/${file}`);
+                    cloudinaryDelete(`uploads/${cloudinaryFile}`);
+                });
+
+                return res.status(200).json({
+                    ok: true,
+                    msg: 'Articulo Eliminado Correctamente',
+                });
+            }
+        } else {
+            return res.status(400).json({
+                ok: true,
+                msg: 'No es un MongoId valido',
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error al borrar el Articulo',
+        });
+    }
+}
+
 // TODO: make the delete and update controllers
 
 module.exports = {
     getArticles,
-    createArticle
+    createArticle,
+    deleteArticle,
 }

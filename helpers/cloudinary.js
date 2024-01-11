@@ -1,4 +1,4 @@
-/* ----------- Cloudinary Seccion Start ----------- */
+
 
 const { v2: cloudinary } = require('cloudinary');
 require('dotenv').config();
@@ -10,20 +10,18 @@ cloudinary.config({
     secure: true,
 });
 
-/* ----------- Cloudinary Seccion End ----------- */
-
+const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+    folder: 'uploads',
+};
 
 const cloudinaryUpload = async (path) => {
 
     /* ----------- Cloudinary Seccion Start ----------- */
         // Use the uploaded file's name as the asset's public ID and 
-        // allow overwriting the asset with new versions
-        const options = {
-            use_filename: true,
-            unique_filename: false,
-            overwrite: true,
-            folder: 'uploads',
-        };
+        // allow overwriting the asset with new versions        
         await cloudinary.uploader
             .upload(path, options)
             .then(result => console.log(result.secure_url))
@@ -31,4 +29,13 @@ const cloudinaryUpload = async (path) => {
 
 }
 
-module.exports = cloudinaryUpload;
+const cloudinaryDelete = async (path) => {
+    cloudinary.uploader.destroy(path)
+    .then(result => console.log(result))
+    ;
+}
+
+module.exports = {
+    cloudinaryUpload,
+    cloudinaryDelete,
+};

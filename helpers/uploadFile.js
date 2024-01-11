@@ -3,7 +3,7 @@ to upload multiple files with the uploadSingle function only */
 
 const Article = require('../models/articles-model')
 const { v4: uuidv4 } = require('uuid');
-const cloudinaryUpload = require('./cloudinary');
+const { cloudinaryUpload } = require('./cloudinary');
 
 
 
