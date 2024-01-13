@@ -1,8 +1,10 @@
 const { response } = require('express');
-const Article = require('../models/articles-model')
-const { postImagesToDb, uploadSingle } = require('../helpers/uploadFile');
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId;
+const path = require('path');
+
+const Article = require('../models/articles-model')
+const { uploadSingle } = require('../helpers/uploadFile');
 
 
 const uploadImage = async (req, res = response) => {
@@ -31,7 +33,7 @@ const uploadImage = async (req, res = response) => {
             const article = await Article.findById(id);
             if (!article) {
                 console.log('No es un id de articulo valido');
-                return false;
+                return error;
             }
             const files = req.body.files;
             if (files.length + article.images.length <= 4) {
@@ -59,10 +61,27 @@ const uploadImage = async (req, res = response) => {
             msg: 'Error al subir las imagenes'
         })
     }
+}
 
+const showImage = (req, res=response) => {
 
+    const type = req.params.type;
+    const img = req.params.img;
+
+    /* importado al inicio --const path = require('path');-- */
+
+    const pathImg = path.join( __dirname, `../uploads/${type}/${img}` );
+    /* const pathImg = `https://res.cloudinary.com/dnmiw6q44/image/upload/v1705031852/uploads/${img}`; */
+    console.log(pathImg)
+
+    res.sendFile( pathImg );
+
+    /* Estamos en clase 141*/
+
+    //FALTA MOSTRAR LA IMAGEN PREDETERMINADA EN CASO QUE NO HAYA UNA
 }
 
 module.exports = {
     uploadImage,
+    showImage,
 }

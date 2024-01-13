@@ -5,7 +5,12 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 
-const { getArticles, createArticle, deleteArticle } = require('../controllers/articles-controllers');
+const { getArticles,
+    createArticle,
+    deleteArticle,
+    actualizarArticulo
+} = require('../controllers/articles-controllers');
+
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
@@ -25,11 +30,18 @@ router.post('/',
     ]
     , createArticle);
 
+router.put(
+    '/:id',
+    [
+        validarJWT
+    ],
+    actualizarArticulo
+);
 
 router.delete(
     '/:id',
-    [validarJWT,
-
+    [
+        validarJWT,
     ],
     deleteArticle,
 );
