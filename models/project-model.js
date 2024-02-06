@@ -10,14 +10,16 @@ const ProjectSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    img: {
-        type: String,
-    },
     published: {
         type: Boolean,
         required: true,
         default: true,
-    }
+    },    
+    img: {
+        type: String,
+        default: '',
+    },
+
 });
 
 ProjectSchema.method('toJSON', function () {

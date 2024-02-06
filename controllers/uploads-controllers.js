@@ -5,6 +5,8 @@ const path = require('path');
 
 const Article = require('../models/articles-model')
 const { uploadSingle } = require('../helpers/uploadFile');
+const { Error } = require('mongoose');
+const { error } = require('console');
 
 
 const uploadImage = async (req, res = response) => {
@@ -42,8 +44,7 @@ const uploadImage = async (req, res = response) => {
                 );
                 return fileNames;
             } else {
-                console.log('son un maximo de 4 archivos')
-                return error;
+                throw new Error('son un maximo de 4 archivos');
             }
 
         }
@@ -63,18 +64,18 @@ const uploadImage = async (req, res = response) => {
     }
 }
 
-const showImage = (req, res=response) => {
+const showImage = (req, res = response) => {
 
     const type = req.params.type;
     const img = req.params.img;
 
     /* importado al inicio --const path = require('path');-- */
 
-    const pathImg = path.join( __dirname, `../uploads/${type}/${img}` );
+    const pathImg = path.join(__dirname, `../uploads/${type}/${img}`);
     /* const pathImg = `https://res.cloudinary.com/dnmiw6q44/image/upload/v1705031852/uploads/${img}`; */
     console.log(pathImg)
 
-    res.sendFile( pathImg );
+    res.sendFile(pathImg);
 
     /* Estamos en clase 141*/
 

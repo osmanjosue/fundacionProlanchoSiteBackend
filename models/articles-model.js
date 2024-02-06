@@ -41,8 +41,7 @@ const ArticleSchema = new Schema ({
 });
 
 ArticleSchema.method( 'toJSON', function() {
-    const {__v, _id, ...object} = this.toObject();
-    object.idArticle = _id;
+    const {__v, ...object} = this.toObject();
     return object;
 })
 

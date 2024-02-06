@@ -7,7 +7,7 @@ const Project = require('../models/project-model');
 
 const getProjects = async (req, res = response) => {
 
-    const projects = await Project.find({}, 'projectName userId img published')
+    const projects = await Project.find({}, 'projectName userId published img')
     res.json({
         ok: true,
         projects
@@ -20,6 +20,13 @@ const createProject = async (req, res = response) => {
     const project = new Project({ userId, ...req.body });
 
     try {
+
+        if (project.projectName===" ") { //se llama en modal-proyecto.component.ts (newProject(){})
+            return res.status(400).json({
+                ok: false,
+                msg: 'No se permiten campos vacios'
+            })
+        }
         await project.save();
         res.json({
             ok: true,
