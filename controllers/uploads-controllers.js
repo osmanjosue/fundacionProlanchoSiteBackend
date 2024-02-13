@@ -38,13 +38,13 @@ const uploadImage = async (req, res = response) => {
                 return error;
             }
             const files = req.body.files;
-            if (files.length + article.images.length <= 4) {
+            if (files.length + article.images.length <= 10) {
                 const fileNames = await Promise.all(
                     files.map(file => uploadSingle(file, type, validExt, id))
                 );
                 return fileNames;
             } else {
-                throw new Error('son un maximo de 4 archivos');
+                throw new Error('son un maximo de 10 archivos');
             }
 
         }

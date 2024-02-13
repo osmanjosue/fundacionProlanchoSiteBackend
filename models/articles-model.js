@@ -37,8 +37,8 @@ const ArticleSchema = new Schema ({
     },
     category: {
         type: String,
-    }
-});
+    },
+}, { timestamps: true }); //https://mongoosejs.com/docs/timestamps.html
 
 ArticleSchema.method( 'toJSON', function() {
     const {__v, ...object} = this.toObject();
