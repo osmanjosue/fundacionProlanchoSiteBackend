@@ -1,17 +1,17 @@
-const { response }=require('express');
+const { response } = require('express');
 const User = require('../models/user-model');
-const bcrypt = require ('bcryptjs');
+const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
 const { getMenuFrontEnd } = require('../helpers/menu-frontEnd');
 
-const loginUser = async(req, res=response) => {
+const loginUser = async (req, res = response) => {
 
-    const {name, password} = req.body;
+    const { name, password } = req.body;
 
     try {
 
-        const userDB= await User.findOne({name});
-        if(!userDB){
+        const userDB = await User.findOne({ name });
+        if (!userDB) {
             return res.status(404).json({
                 ok: false,
                 msg: 'usuario no encontrado'
@@ -20,9 +20,9 @@ const loginUser = async(req, res=response) => {
 
         //verify password
 
-        const validPassword = bcrypt.compareSync( password, userDB.password)
+        const validPassword = bcrypt.compareSync(password, userDB.password)
 
-        if(!validPassword){
+        if (!validPassword) {
             return res.status(400).json({
                 ok: false,
                 msg: 'Contraseña invalida'
@@ -30,7 +30,7 @@ const loginUser = async(req, res=response) => {
         }
 
         //Generar el TOKEN - JWT
-        const token = await generarJWT( userDB._id );
+        const token = await generarJWT(userDB._id);
 
         res.json({
             ok: true,
@@ -40,7 +40,7 @@ const loginUser = async(req, res=response) => {
 
 
 
-    } catch (error){
+    } catch (error) {
         console.log(error);
         res.status(500).json({
             ok: false,
@@ -49,6 +49,22 @@ const loginUser = async(req, res=response) => {
     }
 }
 
+const renewToken = async (req, res = response) => {
+
+    const uid = req.uid;
+
+    //Generar el TOKEN - JWT
+    const token = await generarJWT(uid);
+
+    res.json({
+        ok: true,
+        uid
+
+    })
+
+}
+
 module.exports = {
     loginUser,
+    renewToken
 }
