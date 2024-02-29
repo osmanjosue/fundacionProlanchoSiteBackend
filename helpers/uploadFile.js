@@ -35,7 +35,7 @@ const uploadSingle = async (file, type, validExtensions, id) => {
 
         /* TODO: este filename tiene que poder recibirse en los headers */
         if (continueUploading) {
-            await file.mv(path);
+            /* await file.mv(path); */
             await cloudinaryUpload(path);
             return { fileName };
         } else {

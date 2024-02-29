@@ -48,6 +48,9 @@ const uploadImage = async (req, res = response) => {
             }
 
         }
+
+        //----------------================+++++++++++++++++++++ Helper ----------------================+++++++++++++++++++++
+
         const fileName = await subidaArchivos();
 
         res.json({
