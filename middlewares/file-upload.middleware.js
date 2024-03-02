@@ -14,6 +14,9 @@ const fileUploadMiddleware = (req, res = response, next) => {
         })
     }
 
+    //crea elemento en el req.body llamado files y guarda la informacion en 
+    //un arreglo de uno si es solo un archivo y solo iguala ya que re.files.imagen es un arreglo en si
+
     if (!Array.isArray(req.files.imagen)) {
         req.body.files = [req.files.imagen];
     } else {

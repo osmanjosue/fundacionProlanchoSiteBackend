@@ -9,7 +9,7 @@ const { fileUploadMiddleware } = require('../middlewares/file-upload.middleware'
 
 const router = Router();
 
-router.use(fileUpload());
+router.use(fileUpload()); //para que se habilite el req.files
 
 router.put(
     '/:type/:id', 

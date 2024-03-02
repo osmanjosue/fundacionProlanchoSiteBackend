@@ -8,11 +8,24 @@ const { cloudinaryDelete } = require('../helpers/cloudinary');
 
 const getArticles = async (req, res = response) => {
 
-    const article = await Article.find({}, 'userId title content images dateCreated dateAssigned published project category');
+    const from = (+req.query.from) || 0;
+    const limit = (+req.query.limit) || 0;
+
+    const [article, total] = await Promise.all([
+        Article
+            .find({ published: true }, 'userId title content images dateCreated dateAssigned published project category')
+            .sort({ dateAssigned: -1 })
+            .skip(from)
+            .limit(limit),
+        Article
+            .countDocuments({ published: true })
+
+    ])
 
     res.json({
         ok: true,
-        article
+        article,
+        total
     });
 }
 
@@ -40,7 +53,7 @@ const createArticle = async (req, res = response) => {
     }
 }
 
-const actualizarArticulo = async (req, res=response) => {
+const actualizarArticulo = async (req, res = response) => {
     const articleId = req.params.id;
     try {
 
@@ -54,12 +67,12 @@ const actualizarArticulo = async (req, res=response) => {
             } else {
 
                 //desestructuramos lo que permitimos actualizar
-                const {userId, images, dateCreated, project, category, ...campos} = req.body;
-                await Article.findByIdAndUpdate(articleId, campos, {new: true});
+                const { userId, images, dateCreated, project, category, ...campos } = req.body;
+                await Article.findByIdAndUpdate(articleId, campos, { new: true });
 
                 //proba enviar solo un campo y no campos (todos), para ver si podes actualizar solo las imagenes
                 //individual
-                
+
                 /* AQUI IRIA LA ACTUALIZACION DE IMAGENES
                 articleDb
                 .images
@@ -104,15 +117,15 @@ const deleteArticle = async (req, res) => {
                 })
             } else {
                 await Article.findByIdAndDelete(articleId);
-                
+
                 articleDb
-                .images
-                .map(file => {
-                    cloudinaryFile=file.split('.').at(0);
-                    console.log(cloudinaryFile)
-                    borrarImagenCarpetaLocal(`uploads/articulos/${file}`);
-                    cloudinaryDelete(`uploads/${cloudinaryFile}`);
-                });
+                    .images
+                    .map(file => {
+                        cloudinaryFile = file.split('.').at(0);
+                        console.log(cloudinaryFile)
+                        borrarImagenCarpetaLocal(`uploads/articulos/${file}`);
+                        cloudinaryDelete(`uploads/${cloudinaryFile}`);
+                    });
 
                 return res.status(200).json({
                     ok: true,
