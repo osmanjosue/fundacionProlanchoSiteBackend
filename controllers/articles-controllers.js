@@ -67,7 +67,7 @@ const actualizarArticulo = async (req, res = response) => {
             } else {
 
                 //desestructuramos lo que permitimos actualizar
-                const { userId, images, dateCreated, project, category, ...campos } = req.body;
+                const { userId, dateCreated, project, category, ...campos } = req.body;
                 await Article.findByIdAndUpdate(articleId, campos, { new: true });
 
                 //proba enviar solo un campo y no campos (todos), para ver si podes actualizar solo las imagenes

@@ -4,7 +4,7 @@ const { Router } = require('express');
 const fileUpload = require('express-fileupload');
 
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { uploadImage, showImage } = require('../controllers/uploads-controllers');
+const { uploadImage, showImage, deleteCloudinaryImage } = require('../controllers/uploads-controllers');
 const { fileUploadMiddleware } = require('../middlewares/file-upload.middleware')
 
 const router = Router();
@@ -24,5 +24,13 @@ router.get(
     [
     ],
     showImage);
+
+router.put(
+    '/updateImagesArray/:id/:img',
+    [   
+        validarJWT,     
+    ],
+    deleteCloudinaryImage
+);
 
 module.exports = router;
