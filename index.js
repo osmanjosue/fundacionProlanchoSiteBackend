@@ -2,6 +2,7 @@ require ('dotenv').config();
 const express = require ('express');
 const cors = require('cors');
 const path = require ('path');
+const {sendEmail} = require('./helpers/email.service')
 
 const { dbConnection } = require('./database/config')
 
@@ -21,6 +22,7 @@ app.use( '/api/articles', require('./routes/articles-routes'));
 app.use( '/api/users', require('./routes/user-routes'));
 app.use( '/api/projects', require ('./routes/project-routes'));
 app.use( '/api/uploads', require ('./routes/uploads-routes'));
+/* app.use( '/api/email', require('./routes/email-routes') ); */
 //routes Ends
 
 // Lo último
@@ -31,3 +33,15 @@ app.get('*', (req, res) => {
 app.listen(process.env.PORT, ()=>{
     console.log(('servidor corriendo en puerto ' + process.env.PORT));
 })
+
+sendEmail({
+    to: 'osmanjosue@gmail.com',
+    subject: 'Logs del sistema',
+    htmlBody: `
+    <h3>Logs de sistema - NOC</h3>
+    <p>Lorem velit non veniam ullamco ex eu laborum deserunt est</p>
+    <p>Ver logs adjuntos</p>
+    `
+})
+
+console.log('deberia de haber pasado')
