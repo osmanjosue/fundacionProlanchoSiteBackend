@@ -17,13 +17,14 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = async (options) => {
 
-    const { to, subject, htmlBody } = options;
+    const { from, to, subject, html } = options;
 
     try {
         const sentInformation = await transporter.sendMail({
+            from: from,
             to: to,
             subject: subject,
-            html: htmlBody,
+            html: html,
         })
         console.log(sentInformation);
         return true;
