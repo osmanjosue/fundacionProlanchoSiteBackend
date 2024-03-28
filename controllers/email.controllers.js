@@ -1,5 +1,5 @@
 const { response } = require('express');
-const {sendEmail} = require('../helpers/email.service')
+const { sendEmail } = require('../helpers/email.service')
 
 const sendEmailController = async (req, res = response) => {
 
@@ -7,14 +7,14 @@ const sendEmailController = async (req, res = response) => {
 
     try {
 
-        sendEmail(emailData)
-        console.log('se pudo')
+        const emailInformation = await sendEmail(emailData).then(resp => resp);
         res.json({
             ok: true,
-            msg: 'Correo enviado exitosamente'
+            msg: 'Correo enviado exitosamente',
+            emailInformation
         })
     } catch (error) {
-        console.log('no se pudo')
+        console.log(error);
     }
 
 }
