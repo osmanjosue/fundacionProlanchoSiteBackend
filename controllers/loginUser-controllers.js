@@ -14,7 +14,7 @@ const loginUser = async (req, res = response) => {
         if (!userDB) {
             return res.status(404).json({
                 ok: false,
-                msg: 'usuario no encontrado'
+                msg: 'Uno de los campos es invalido'
             })
         }
 
@@ -25,7 +25,7 @@ const loginUser = async (req, res = response) => {
         if (!validPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Contraseña invalida'
+                msg: 'Uno de los campos es invalido'
             })
         }
 
