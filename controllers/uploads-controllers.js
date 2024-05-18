@@ -21,28 +21,27 @@ const uploadImage = async (req, res = response) => {
     const regex = new RegExp(/^[0-9a-fA-F]{24}$/)
     console.log(regex.test(id)); */
 
-    try {
-        if (!validTypes.includes(type) || !ObjectId.isValid(id)) {
-            return res.status(400).json({
-                ok: false,
-                msg: 'No es un tipo o MongoId valido',
-            })
-        }
+    if (!validTypes.includes(type) || !ObjectId.isValid(id)) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No es un tipo o MongoId valido',
+        })
+    }
 
+
+    try {
 
         //----------------================+++++++++++++++++++++ Helper ----------------================+++++++++++++++++++++
 
         const subidaArchivos = async () => {
-            const article = await Article.findById(id);
-            if (!article) {
-                console.log('No es un id de articulo valido');
-                return error;
-            }
+            const article = await Article.findById(id); //TODO: esto ya se evaluo en uploadFile.js
+            if (!article) throw new Error('No es un id de articulo valido');
+
             const files = req.body.files;
             if (files.length + article.images.length <= 10) {
                 const fileNames = await Promise.all(
-                    files.map(file => uploadSingle(file, type, validExt, id))
-                );
+                    files.map(file => uploadSingle(file, type, validExt, article))
+                ) //! POR AQUI VAS
                 return fileNames;
             } else {
                 throw new Error('son un maximo de 10 archivos');
@@ -52,15 +51,17 @@ const uploadImage = async (req, res = response) => {
 
         //----------------================+++++++++++++++++++++ Helper ----------------================+++++++++++++++++++++
 
-        const fileName = subidaArchivos();
+
+
+        const fileNames = await subidaArchivos();
 
         res.json({
             ok: true,
             msg: 'Subida Exitosa',
-            fileName
+            fileNames,
         })
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
         res.status(500).json({
             ok: false,
             msg: 'Error al subir las imagenes'

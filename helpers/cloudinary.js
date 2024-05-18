@@ -1,6 +1,7 @@
 
 
 const { v2: cloudinary } = require('cloudinary');
+const { borrarImagenCarpetaLocal } = require('./updateOrDeleteFiles');
 require('dotenv').config();
 
 cloudinary.config({
@@ -20,19 +21,26 @@ const options = {
 const cloudinaryUpload = async (path) => {
 
     /* ----------- Cloudinary Seccion Start ----------- */
-        // Use the uploaded file's name as the asset's public ID and 
-        // allow overwriting the asset with new versions        
-        await cloudinary.uploader
-            .upload(path, options)
-            .then(result => console.log(result.secure_url))
-        /* ----------- Cloudinary Seccion End ----------- */
+    // Use the uploaded file's name as the asset's public ID and 
+    // allow overwriting the asset with new versions        
+    try {
+        const result = await cloudinary.uploader
+            .upload(path, options);
+        await borrarImagenCarpetaLocal(path)
+        return result.secure_url;
+    }
+    catch (err) {
+        await borrarImagenCarpetaLocal(path)
+        throw new Error(JSON.stringify(err))
+    }
+    /* ----------- Cloudinary Seccion End ----------- */
 
 }
 
 const cloudinaryDelete = async (path) => {
     cloudinary.uploader.destroy(path)
-    .then(result => console.log(result))
-    ;
+        .then(result => console.log(result))
+        ;
 }
 
 module.exports = {

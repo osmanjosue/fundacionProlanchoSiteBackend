@@ -10,7 +10,7 @@ const fileUploadMiddleware = (req, res = response, next) => {
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({
             ok: false,
-            msg: 'No se subio ningun archivo',
+            msg: 'No hay archivo en la peticion',
         })
     }
 
